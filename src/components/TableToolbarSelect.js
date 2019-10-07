@@ -81,34 +81,32 @@ class TableToolbarSelect extends React.Component {
 
   handleCSVDownload = () => {
     const { data, columns, options, selectedRows } = this.props;
-
     let dataToDownload = data.filter(value => selectedRows.lookup[value.index]);
-
     let columnsToDownload = columns;
 
+    // check rows
+    dataToDownload = dataToDownload.map((row, index) => {
+      let i = 0;
+
+      // Help to preserve sort order in custom render columns
+      row.index = index;
+
+      return {
+        data: row.data.map(column => {
+          // if we have a custom render, which will appear as a react element, we must grab the actual value from data
+          // TODO: Create a utility function for checking whether or not something is a react object
+          return typeof column === 'object' && column !== null && !Array.isArray(column)
+            ? data[row.index].data[i++]
+            : column;
+        }),
+        index: index,
+      };
+    });
+
     if (options.downloadOptions && options.downloadOptions.filterOptions) {
-      // check rows
-      dataToDownload = dataToDownload.map((row, index) => {
-        let i = -1;
-
-        // Help to preserve sort order in custom render columns
-        row.index = index;
-
-        return {
-          data: row.data.map(column => {
-            i += 1;
-
-            // if we have a custom render, which will appear as a react element, we must grab the actual value from data
-            // TODO: Create a utility function for checking whether or not something is a react object
-            return typeof column === 'object' && column !== null && !Array.isArray(column)
-              ? data[row.index].data[i]
-              : column;
-          }),
-        };
-      });
       // now, check columns:
       if (options.downloadOptions.filterOptions.useDisplayedColumnsOnly) {
-        columnsToDownload = columns.filter((_, index) => _.display === 'true');
+        columnsToDownload = columns.filter(_ => _.display === 'true');
 
         dataToDownload = dataToDownload.map(row => {
           row.data = row.data.filter((_, index) => columns[index].display === 'true');
