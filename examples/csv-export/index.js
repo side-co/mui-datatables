@@ -1,6 +1,5 @@
 import Button from '@material-ui/core/Button';
 import React from 'react';
-import ReactDOM from 'react-dom';
 import MUIDataTable from '../../src/';
 
 class Example extends React.Component {
@@ -67,7 +66,7 @@ class Example extends React.Component {
 
     const options = {
       filter: true,
-      selectableRows: true,
+      selectableRows: 'multiple',
       filterType: 'dropdown',
       responsive: 'stacked',
       rowsPerPage: 10,

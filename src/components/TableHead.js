@@ -34,7 +34,7 @@ class TableHead extends React.Component {
 
     const numSelected = (selectedRows && selectedRows.data.length) || 0;
     const isDeterminate = numSelected > 0 && numSelected < count;
-    const isChecked = numSelected === count ? true : false;
+    const isChecked = numSelected === count;
 
     return (
       <MuiTableHead

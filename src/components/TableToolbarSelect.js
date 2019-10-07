@@ -5,7 +5,9 @@ import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
 import DeleteIcon from '@material-ui/icons/Delete';
+import DownloadIcon from '@material-ui/icons/CloudDownload';
 import { withStyles } from '@material-ui/core/styles';
+import { createCSVDownload } from '../utils';
 
 const defaultToolbarSelectStyles = theme => ({
   root: {
@@ -24,6 +26,24 @@ const defaultToolbarSelectStyles = theme => ({
   },
   iconButton: {
     marginRight: '24px',
+    '&:hover': {
+      color: theme.palette.primary.main
+    }
+  },
+  actions: {
+    flex: '1 1 auto',
+    textAlign: 'right',
+  },
+  [theme.breakpoints.down('sm')]: {
+    actions: {
+      // flex: "1 1 60%",
+      textAlign: 'right',
+    },
+  },
+  [theme.breakpoints.down('xs')]: {
+    actions: {
+      textAlign: 'center',
+    },
   },
   deleteIcon: {},
 });
@@ -59,6 +79,46 @@ class TableToolbarSelect extends React.Component {
     this.props.selectRowUpdate('custom', selectedRows);
   };
 
+  handleCSVDownload = () => {
+    const { data, columns, options, selectedRows } = this.props;
+
+    let dataToDownload = data.filter((value) => (selectedRows.lookup[value.index]));
+
+    let columnsToDownload = columns;
+
+    if (options.downloadOptions && options.downloadOptions.filterOptions) {
+      // check rows
+      dataToDownload = dataToDownload.map((row, index) => {
+        let i = -1;
+
+        // Help to preserve sort order in custom render columns
+        row.index = index;
+
+        return {
+          data: row.data.map(column => {
+            i += 1;
+
+            // if we have a custom render, which will appear as a react element, we must grab the actual value from data
+            // TODO: Create a utility function for checking whether or not something is a react object
+            return typeof column === 'object' && column !== null && !Array.isArray(column)
+              ? data[row.index].data[i]
+              : column;
+          }),
+        };
+      });
+      // now, check columns:
+      if (options.downloadOptions.filterOptions.useDisplayedColumnsOnly) {
+        columnsToDownload = columns.filter((_, index) => _.display === 'true');
+
+        dataToDownload = dataToDownload.map(row => {
+          row.data = row.data.filter((_, index) => columns[index].display === 'true');
+          return row;
+        });
+      }
+    }
+    createCSVDownload(columnsToDownload, dataToDownload, options);
+  };
+
   render() {
     const { classes, onRowsDelete, selectedRows, options, displayData } = this.props;
     const textLabels = options.textLabels.selectedRows;
@@ -70,15 +130,28 @@ class TableToolbarSelect extends React.Component {
             {selectedRows.data.length} {textLabels.text}
           </Typography>
         </div>
-        {options.customToolbarSelect ? (
-          options.customToolbarSelect(selectedRows, displayData, this.handleCustomSelectedRows)
-        ) : (
-          <Tooltip title={textLabels.delete}>
-            <IconButton className={classes.iconButton} onClick={onRowsDelete} aria-label={textLabels.deleteAria}>
-              <DeleteIcon className={classes.deleteIcon} />
-            </IconButton>
-          </Tooltip>
-        )}
+        <div className={classes.actions} >
+          {options.customToolbarSelect ? (
+            options.customToolbarSelect(selectedRows, displayData, this.handleCustomSelectedRows)
+          ) : (
+            <Tooltip title={textLabels.delete}>
+              <IconButton className={classes.iconButton} onClick={onRowsDelete} aria-label={textLabels.deleteAria}>
+                <DeleteIcon className={classes.deleteIcon} />
+              </IconButton>
+            </Tooltip>
+          )}
+          {options.download && (
+            <Tooltip title={textLabels.downloadCsv}>
+              <IconButton
+                data-testid={textLabels.downloadCsv + '-iconButton'}
+                aria-label={textLabels.downloadCsv}
+                classes={{ root: classes.iconButton }}
+                onClick={this.handleCSVDownload}>
+                <DownloadIcon />
+              </IconButton>
+            </Tooltip>
+          )}
+        </div>
       </Paper>
     );
   }

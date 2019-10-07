@@ -1256,7 +1256,7 @@ class MUIDataTable extends React.Component {
     let responsiveClass;
 
     switch (this.options.responsive) {
-      // DEPRECATED: This options is beign transitioned to `responsiveScrollMaxHeight`
+      // DEPRECATED: This options is being transitioned to `responsiveScrollMaxHeight`
       case 'scroll':
         responsiveClass = classes.responsiveScroll;
         break;
@@ -1283,6 +1283,8 @@ class MUIDataTable extends React.Component {
             onRowsDelete={this.selectRowDelete}
             displayData={displayData}
             selectRowUpdate={this.selectRowUpdate}
+            data={data}
+            columns={columns}
           />
         ) : (
           showToolbar && (

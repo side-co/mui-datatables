@@ -32,6 +32,7 @@ const textLabels = {
     text: 'row(s) selected',
     delete: 'Delete',
     deleteAria: 'Delete Selected Rows',
+    downloadCsv: 'Download CSV',
   },
 };
 
