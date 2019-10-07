@@ -27,8 +27,8 @@ const defaultToolbarSelectStyles = theme => ({
   iconButton: {
     marginRight: '24px',
     '&:hover': {
-      color: theme.palette.primary.main
-    }
+      color: theme.palette.primary.main,
+    },
   },
   actions: {
     flex: '1 1 auto',
@@ -82,7 +82,7 @@ class TableToolbarSelect extends React.Component {
   handleCSVDownload = () => {
     const { data, columns, options, selectedRows } = this.props;
 
-    let dataToDownload = data.filter((value) => (selectedRows.lookup[value.index]));
+    let dataToDownload = data.filter(value => selectedRows.lookup[value.index]);
 
     let columnsToDownload = columns;
 
@@ -130,7 +130,7 @@ class TableToolbarSelect extends React.Component {
             {selectedRows.data.length} {textLabels.text}
           </Typography>
         </div>
-        <div className={classes.actions} >
+        <div className={classes.actions}>
           {options.customToolbarSelect ? (
             options.customToolbarSelect(selectedRows, displayData, this.handleCustomSelectedRows)
           ) : (

@@ -1,5 +1,5 @@
 {
-  "name": "mui-datatables",
+  "name": "@side-co/mui-datatables",
   "version": "2.12.0",
   "description": "Datatables for React using Material-UI",
   "main": "dist/index.js",
@@ -23,7 +23,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/gregnb/mui-datatables.git"
+    "url": "git+https://github.com/side-co/mui-datatables.git"
   },
   "keywords": [
     "material-ui",
@@ -33,9 +33,9 @@
   "author": "gregnb <gregnb@gmail.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/gregnb/mui-datatables/issues"
+    "url": "https://github.com/side-co/mui-datatables/issues"
   },
-  "homepage": "https://github.com/gregnb/mui-datatables#readme",
+  "homepage": "https://github.com/side-co/mui-datatables#readme",
   "devDependencies": {
     "@material-ui/core": "^3.2.0",
     "@material-ui/icons": "^3.0.1",
@@ -121,5 +121,6 @@
     ],
     "sourceMap": false,
     "instrument": false
-  }
+  },
+  "publishConfig": { "registry": "https://npm.pkg.github.com/" }
 }
