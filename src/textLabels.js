@@ -1,7 +1,7 @@
 /*
  * Default text labels.
  */
-const textLabels = {
+const getTextLabels = () => ({
   body: {
     noMatch: 'Sorry, no matching records found',
     toolTip: 'Sort',
@@ -34,6 +34,6 @@ const textLabels = {
     deleteAria: 'Delete Selected Rows',
     downloadCsv: 'Download CSV',
   },
-};
+});
 
-export default textLabels;
+export default getTextLabels;
