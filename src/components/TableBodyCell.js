@@ -13,7 +13,6 @@ const defaultBodyCellStyles = theme => ({
       display: 'inline-block',
       fontSize: '16px',
       height: '24px',
-      whiteSpace: 'nowrap',
       width: 'calc(50% - 80px)',
       whiteSpace: 'nowrap',
       '&:last-child': {

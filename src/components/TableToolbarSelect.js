@@ -7,7 +7,8 @@ import Typography from '@material-ui/core/Typography';
 import DeleteIcon from '@material-ui/icons/Delete';
 import DownloadIcon from '@material-ui/icons/CloudDownload';
 import { withStyles } from '@material-ui/core/styles';
-import { createCSVDownload } from '../utils';
+import { createCSVDownload, downloadCSV } from '../utils';
+import cloneDeep from 'lodash.clonedeep';
 
 const defaultToolbarSelectStyles = theme => ({
   root: {
@@ -81,7 +82,7 @@ class TableToolbarSelect extends React.Component {
 
   handleCSVDownload = () => {
     const { data, columns, options, selectedRows } = this.props;
-    let dataToDownload = data.filter(value => selectedRows.lookup[value.index]);
+    let dataToDownload = cloneDeep(data).filter(value => selectedRows.lookup[value.index]);
     let columnsToDownload = columns;
 
     // check rows
@@ -114,7 +115,7 @@ class TableToolbarSelect extends React.Component {
         });
       }
     }
-    createCSVDownload(columnsToDownload, dataToDownload, options);
+    createCSVDownload(columnsToDownload, dataToDownload, options, downloadCSV);
   };
 
   render() {
